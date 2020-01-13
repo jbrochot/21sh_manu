@@ -26,6 +26,6 @@ char	*error_cd(char *str, int mod);
 char  *parse_error(char *s, t_var *data);
 void	rm_error(char *s);
 
-int   echo_builtin(char **cmd);
+int   echo_builtin(char *cmd);
 
 #endif

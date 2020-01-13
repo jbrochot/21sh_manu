@@ -57,6 +57,14 @@ void	set_env(t_var *data)
 	data->environ[3] = NULL;
 }
 
+void ft_putendt(char *s)
+{
+	if (!s)
+		return ;
+	ft_putstr(s);
+	ft_putchar('\t');
+}
+
 void	update_history(t_var *data)
 {
 	int i;
@@ -70,7 +78,7 @@ void	update_history(t_var *data)
 	back_fd = dup(1);
 	dup2(hist, 1);
 	while (data->history[i])
-		ft_putendl(data->history[i++]);
+		ft_putendt(data->history[i++]);
 	close(hist);
 	dup2(back_fd, 1);
 }
@@ -82,7 +90,7 @@ void	get_history(t_var *data, int fd)
 
 	i = 0;
 	line = NULL;
-	while (get_next_line(fd, &line) == 1 && i < BUFF_SHELL)
+	while (get_next_tab(fd, &line) == 1 && i < BUFF_SHELL)
 	{
 		data->history[i] = ft_strdup(line);
 		i++;

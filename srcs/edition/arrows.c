@@ -16,6 +16,8 @@ void	move_left(t_var *data)
 {
 	if (data->pos == 0)
 		return ;
+	if (data->lex_str[data->pos - 1] == '\n')
+		return ;
 	if (data->right == 1)
 	{
 		abort_selection(data);

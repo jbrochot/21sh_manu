@@ -84,7 +84,7 @@ t_cmd		*parse_basic(char **p_input, char *end, int *res)
 	ret = parse_redir(ret, p_input, end);
 	while (*p_input < end)
 	{
-//		ft_printf("\np_input : %d -- end : %d -- diff : %d\n", *p_input, end, 
+//		ft_printf("\np_input : %d -- end : %d -- diff : %d\n", *p_input, end,
 //				end - *p_input);
 		if ((tok = tokenizer(p_input, end, &new_cmd, &new_cmd_end)) == 0)
 		{
@@ -101,7 +101,7 @@ t_cmd		*parse_basic(char **p_input, char *end, int *res)
 			ft_strndup(new_cmd, new_cmd_end - new_cmd),
 			new_cmd_end - new_cmd + 1));
 		ret = parse_redir(ret, p_input, end);
-//		ft_printf("\np_input : %d -- end : %d -- diff : %d\n", *p_input, end, 
+//		ft_printf("\np_input : %d -- end : %d -- diff : %d\n", *p_input, end,
 //				end - *p_input);
 	}
 //	ft_printf("\nHERE\n");

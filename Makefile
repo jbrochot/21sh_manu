@@ -14,6 +14,7 @@ NAME = 21sh
 
 SRC = srcs/core/main.c \
 	  srcs/core/signal.c \
+		srcs/core/get_next_tab.c \
 	  srcs/edition/input.c \
 	  srcs/edition/history.c \
 	  srcs/edition/arrows.c \
@@ -23,11 +24,11 @@ SRC = srcs/core/main.c \
 	  srcs/edition/subshell.c \
 	  srcs/edition/copy_paste.c \
 	  srcs/edition/edition_tools.c \
+		srcs/edition/quotes.c \
 	  srcs/parser/constructors.c \
 	  srcs/parser/parser.c \
 	  srcs/parser/tokenizer.c \
 	  srcs/parser/parser_tools.c \
-	  srcs/parser/quotes.c \
 	  srcs/execute/exec_cmd.c \
 	  srcs/execute/execute_tools.c \
 	  srcs/execute/file_manage.c \
@@ -42,6 +43,7 @@ SRC = srcs/core/main.c \
 
 OBJ = srcs/core/main.o \
 	  srcs/core/signal.o \
+		srcs/core/get_next_tab.o \
 	  srcs/edition/input.o \
 	  srcs/edition/history.o \
 	  srcs/edition/arrows.o \
@@ -51,11 +53,11 @@ OBJ = srcs/core/main.o \
 	  srcs/edition/subshell.o \
 	  srcs/edition/copy_paste.o \
 	  srcs/edition/edition_tools.o \
+		srcs/edition/quotes.o \
 	  srcs/parser/constructors.o \
 	  srcs/parser/parser.o \
 	  srcs/parser/tokenizer.o \
 	  srcs/parser/parser_tools.o \
-	  srcs/parser/quotes.o \
 	  srcs/execute/exec_cmd.o \
 	  srcs/execute/execute_tools.o \
 	  srcs/execute/file_manage.o \

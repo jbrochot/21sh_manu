@@ -21,7 +21,7 @@ int		is_builtin(t_var *data, char **cmd)
 	else if (!ft_strcmp(cmd[0], "env"))
 		return (env_builtin(data->environ));
 	else if (!ft_strcmp(cmd[0], "echo"))
-		return (echo_builtin(cmd));
+		return (echo_builtin(data->lex_str));
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		return (setenv_builtin(data, cmd));
 	else if (!ft_strcmp(cmd[0], "unsetenv"))

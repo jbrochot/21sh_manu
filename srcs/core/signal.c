@@ -31,12 +31,14 @@ static void		signal_quit(int sig)
 		data->mod_quotes = 0;
 		data->p_prompt = 0;
 		data->h_prompt = 0;
-//		get_input(data);//////////
 		prompt(data);
 		return ;
 	}
 	else if (sig == SIGQUIT)
-		ft_printf("\nSIGQUIT\n");
+	{
+		ft_putchar('\n');
+		exit_shell(data);
+	}
 	else if (sig == SIGTERM)
 	{
 		ft_putchar('\n');

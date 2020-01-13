@@ -51,7 +51,7 @@ void	remove_prev_char(t_var *data)
 	int i;
 
 	i = data->pos - 1;
-	if (!data->lex_str[0])
+	if (!data->lex_str[0] || data->lex_str[i] == '\n')
 		return ;
 	while (data->lex_str[i])
 	{

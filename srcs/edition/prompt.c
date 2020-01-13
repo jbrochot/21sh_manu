@@ -31,12 +31,34 @@ static void		print_str(t_var *data)
 	}
 }
 
+static void 	print_tronc_str(t_var *data)
+{
+	int i;
+
+	i = ft_strlen(data->lex_str);
+	while (data->lex_str[i] != '\n' && i > 0)
+		i--;
+	i++;
+	while (data->lex_str[i])
+	{
+		if (data->tab[i] == 0)
+			ft_putchar(data->lex_str[i]);
+		else
+		{
+			TERMCAP("mr");
+			ft_putchar(data->lex_str[i]);
+			TERMCAP("me");
+		}
+		i++;
+	}
+}
+
 static void		print_prompt(t_var *data)
 {
 	if (data->quotes % 2 != 0 || data->dquotes % 2 != 0)
 	{
 		data->std_prompt = 0;
-		ft_putstr("quotes> ");
+		ft_putstr("> ");
 	}
 	else if (data->p_prompt == 1)
 		ft_putstr("pipe> ");
@@ -52,6 +74,19 @@ static void		print_prompt(t_var *data)
 		data->std_prompt = 1;
 		ft_putstr("21sh $> ");
 		TERMCAP("me");
+	}
+}
+
+void 			form_term(int pos, t_var *data)
+{
+	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0)
+	{
+		while (pos >= 0)
+		{
+			if (data->lex_str[pos] == '\n')
+				TERMCAP("up");
+			pos--;
+		}
 	}
 }
 
@@ -71,9 +106,13 @@ void			prompt(t_var *data)
 	else if (data->c_prompt == 1)
 		data->pos = -8;
 	get_curs_pos(data, data->pos);
+//	form_term(tmp, data);
 	TERMCAP("cd");
 	print_prompt(data);
-	print_str(data);
+	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0)
+		print_str(data);
+	else
+		print_tronc_str(data);
 	data->pos = tmp;
 	get_curs_pos(data, data->pos);
 }

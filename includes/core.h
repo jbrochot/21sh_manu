@@ -36,6 +36,7 @@
 t_var			*update_data(int mod, t_var *data);
 int				exit_shell(t_var *data);
 void			set_termcanon(t_var *data);
+int			get_next_tab(const int fd, char **line);
 
 void			signal_handler(void);
 
