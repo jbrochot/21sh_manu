@@ -43,6 +43,7 @@ void	show_history(t_var *data, int mod)
 {
 	static int i;
 
+	data->history_mod = 1;
 	if (data->new_history == 1)
 	{
 		data->new_history = 0;

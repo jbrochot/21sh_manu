@@ -79,7 +79,7 @@ static void		print_prompt(t_var *data)
 
 void 			form_term(int pos, t_var *data)
 {
-	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0)
+	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0 && data->history_mod == 0)
 	{
 		while (pos >= 0)
 		{
@@ -106,7 +106,7 @@ void			prompt(t_var *data)
 	else if (data->c_prompt == 1)
 		data->pos = -8;
 	get_curs_pos(data, data->pos);
-//	form_term(tmp, data);
+	form_term(tmp, data);
 	TERMCAP("cd");
 	print_prompt(data);
 	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0)
@@ -115,6 +115,7 @@ void			prompt(t_var *data)
 		print_tronc_str(data);
 	data->pos = tmp;
 	get_curs_pos(data, data->pos);
+	data->history_mod = 0;
 }
 
 void			get_winsize(t_var *data)

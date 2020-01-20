@@ -12,12 +12,40 @@
 
 #include "../../includes/core.h"
 
+void 	multi_line(t_var *data, int mod)
+{
+	int first_c;
+	int current_ret;
+	int nb_prompt;
+
+	data->pos--;
+	first_c = how_many_before(data, data->pos - 1);
+	current_ret = count_current_ret(data);
+	if (current_ret > 1)
+		nb_prompt = 0;
+	else
+		nb_prompt = -8;
+	TERMCAP("up");
+	while (nb_prompt < 0)
+	{
+		TERMCAP("nd");
+		nb_prompt++;
+	}
+	while (first_c < data->pos)
+	{
+		TERMCAP("nd");
+		first_c++;
+	}
+	getchar();
+	prompt(data);
+}
+
 void	move_left(t_var *data)
 {
 	if (data->pos == 0)
 		return ;
 	if (data->lex_str[data->pos - 1] == '\n')
-		return ;
+		return (multi_line(data, 0));
 	if (data->right == 1)
 	{
 		abort_selection(data);
@@ -37,6 +65,8 @@ void	move_right(t_var *data)
 {
 	if (data->pos == ft_strlen(data->lex_str))
 		return ;
+//	if (data->lex_str[data->pos] == '\n')
+//		return (multi_line(data, 1));
 	if (data->left == 1)
 	{
 		abort_selection(data);

@@ -72,9 +72,10 @@ typedef struct	s_var
 	char	*here_stock;
 	int		cat_here;
 	char	*files;
-	int test;
-	char **stock_test;
-	int redir_count;
+	int 	test;
+	char	**stock_test;
+	int 	redir_count;
+	int 	history_mod;
 }				t_var;
 
 void			get_input(t_var *data);
@@ -123,5 +124,8 @@ void			new_prompt(t_var *data);
 void			cursh_prompt(t_var *data);
 void			pipe_prompt(t_var *data, int index);
 void			heredoc_prompt(t_var *data);
+
+int 		 how_many_before(t_var *data, int pos);
+int   	 count_current_ret(t_var *data);
 
 #endif
