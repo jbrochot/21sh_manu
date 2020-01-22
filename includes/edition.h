@@ -27,11 +27,11 @@
 # define OPT_R		(char[5]){ 27, 27, 91, 67, 0}
 # define OPT_U		(char[5]){ 27, 27, 91, 65, 0}
 # define OPT_D		(char[5]){ 27, 27, 91, 66, 0}
-# define RET		(char[4]){ 10, 0, 0, 0}
-# define HOME		(char[4]){ 27, 91, 72, 0}
-# define END		(char[4]){ 27, 91, 70, 0}
-# define UNDO		(char[4]){ 127, 0, 0, 0}
-# define DEL		(char[5]){ 27, 91, 51, 126, 0}
+# define RET			(char[4]){ 10, 0, 0, 0}
+# define HOME			(char[4]){ 27, 91, 72, 0}
+# define END			(char[4]){ 27, 91, 70, 0}
+# define UNDO			(char[4]){ 127, 0, 0, 0}
+# define DEL			(char[5]){ 27, 91, 51, 126, 0}
 # define CTRL_D		(char[4]){ 4, 0, 0, 0}
 
 # define TERMCAP(x) tputs(tgetstr(x, NULL), 1, ft_putchar_v2)
@@ -76,6 +76,7 @@ typedef struct	s_var
 	char	**stock_test;
 	int 	redir_count;
 	int 	history_mod;
+	int 	save_pos;
 }				t_var;
 
 void			get_input(t_var *data);
@@ -99,6 +100,8 @@ void			update_history(t_var *data);
 void			prompt(t_var *data);
 void			get_winsize(t_var *data);
 void			get_curs_pos(t_var *data, int index);
+void 			get_curs_pos_line_left(t_var *data, int index, int pos, int mod);
+void 			get_curs_pos_line_right(t_var *data, int index, int pos, int mod);
 
 void			jump(t_var *data, int mod);
 void			get_prev_word(t_var *data);
@@ -126,6 +129,6 @@ void			pipe_prompt(t_var *data, int index);
 void			heredoc_prompt(t_var *data);
 
 int 		 how_many_before(t_var *data, int pos);
-int   	 count_current_ret(t_var *data);
+int   	 count_current_ret(t_var *data, int pos);
 
 #endif

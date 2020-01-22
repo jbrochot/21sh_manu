@@ -131,11 +131,75 @@ void			check_first_last_char(t_var *data, int mod)
 	}
 }
 
+void	rm_cote(char *line)
+{
+	int i;
+	int j;
+	int k;
+
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == '"')
+		{
+			k = i;
+			j = i + 1;
+			while (line[j])
+			{
+				line[k] = line[j];
+				k++;
+				j++;
+			}
+			line[k] = '\0';
+		}
+	}
+}
+
+char 			*tild(t_var *data, char *lex)
+{
+	int 	i;
+	int 	j;
+	char 	*tmp;
+	char	*save;
+
+	i = -1;
+	j = 0;
+	if (!(tmp = (char*)malloc(sizeof(char) * BUFF_SHELL)))
+		return (NULL);
+	if (!(save = (char*)malloc(sizeof(char) * BUFF_SHELL)))
+		return (NULL);
+	while (lex[++i])
+	{
+		if (lex[i] == '~')
+		{
+			while (j < i)
+			{
+				tmp[j] = lex[j];
+				j++;
+			}
+			tmp[j] = '\0';
+			tmp = ft_strjoin_free(tmp, get_env(data->environ, "HOME="), 0);
+			j = 0;
+			while (lex[++i])
+			{
+				save[j] = lex[i];
+				j++;
+			}
+			save[j] = '\0';
+			lex = ft_strjoin_free(tmp, save, 2);
+		}
+	}
+	return (lex);
+}
+
 void			launch_cmds(t_var *data)
 {
 	t_cmd	*cmd;
 
 	data->cmd_index = 0;
+	rm_cote(data->lex_str);
+	if (!(data->lex_str = tild(data, data->lex_str)))
+		return ;
 	check_first_last_char(data, 0);
 	data->cmds = ft_strsplit(data->lex_str, ';');
 	check_single_pipes(data);
@@ -171,6 +235,7 @@ void			get_input(t_var *data)
 		}
 		if (!ft_strcmp(buffer, RET))
 		{
+			data->pos = ft_strlen(data->lex_str);
 			if (ft_strlen(data->lex_str) != 0)
 			{
 				if (check_quotes(data) == 1)

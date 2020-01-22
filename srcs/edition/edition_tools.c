@@ -38,6 +38,7 @@ void	init_shell(t_var *data)
 	data->n_prompt = 0;
 	data->c_prompt = 0;
 	data->redir_count = 0;
+	data->save_pos = 0;
 	if (!(data->lex_str = (char*)malloc(sizeof(char) * BUFF_SHELL)))
 		return ;
 	if (!(data->history = (char**)malloc(sizeof(char*) * BUFF_SHELL)))

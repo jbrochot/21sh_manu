@@ -14,18 +14,24 @@
 
 int  how_many_before(t_var *data, int pos)
 {
+  pos--;
   while (pos > 0 && data->lex_str[pos - 1] != '\n')
     pos--;
   return (pos);
 }
 
-int   count_current_ret(t_var *data)
+/*int   how_many_after(t_var *data, int pos)
+{
+
+}*/
+
+int   count_current_ret(t_var *data, int pos)
 {
   int i;
   int current;
 
   current = 0;
-  i = data->pos + 1;
+  i = pos;
   while (i > 0)
   {
     if (data->lex_str[i] == '\n')

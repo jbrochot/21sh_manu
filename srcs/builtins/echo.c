@@ -32,30 +32,6 @@ void	rm_echo(char *str)
 	str[j] = '\0';
 }
 
-void	rm_cote(char *line)
-{
-	int i;
-	int j;
-	int k;
-
-	i = -1;
-	while (line[++i])
-	{
-		if (line[i] == '"')
-		{
-			k = i;
-			j = i + 1;
-			while (line[j])
-			{
-				line[k] = line[j];
-				k++;
-				j++;
-			}
-			line[k] = '\0';
-		}
-	}
-}
-
 int		algo_quote(char *line, int i)
 {
 	int index;
@@ -110,7 +86,7 @@ int 	take_quote(char *cmd, int index, int selec_q)
 	return (index);
 }
 
-int 	echo_builtin(char *cmd)
+int 	echo_builtin(char *cmd, int mod)
 {
 	int i;
   int id_quote;
@@ -139,7 +115,8 @@ int 	echo_builtin(char *cmd)
 			id_dquote++;
 		}
 	}
-	ft_printf("%s\n", cmd);
+	if (mod == 0)
+		ft_printf("%s\n", cmd);
 	free(cmd);
 	return (1);
 }

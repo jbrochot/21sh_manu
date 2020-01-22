@@ -43,6 +43,8 @@ void	realloc_str(char c, t_var *data)
 	s1[i] = '\0';
 	data->lex_str = ft_strjoin(s1, s2);
 	data->pos++;
+	if (data->lex_str[data->pos] == '\n')
+		data->save_pos = 1;
 	prompt(data);
 }
 
@@ -51,8 +53,13 @@ void	remove_prev_char(t_var *data)
 	int i;
 
 	i = data->pos - 1;
-	if (!data->lex_str[0] || data->lex_str[i] == '\n')
+	if (!data->lex_str[0] || (data->lex_str[i] == '\n'
+			&& (data->quotes % 2 != 0 || data->dquotes % 2 != 0)))
 		return ;
+	if (data->lex_str[i] == '\n')
+		data->save_pos = 2;
+	if (data->lex_str[i + 1] == '\n')
+		data->save_pos = 1;
 	while (data->lex_str[i])
 	{
 		data->lex_str[i] = data->lex_str[i + 1];
@@ -71,6 +78,8 @@ void	remove_cur_char(t_var *data)
 	i = data->pos;
 	if (!data->lex_str[data->pos])
 		return ;
+	if (data->lex_str[i] == '\n')
+		data->save_pos = 1;
 	while (data->lex_str[i])
 	{
 		data->lex_str[i] = data->lex_str[i + 1];

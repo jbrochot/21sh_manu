@@ -65,7 +65,6 @@ void	show_history(t_var *data, int mod)
 			i++;
 			if (i == 0)
 				ft_bzero(data->lex_str, ft_strlen(data->lex_str));
-	//		TERMCAP("cl");
 			data->pos = ft_strlen(data->lex_str);
 			prompt(data);
 			return ;
@@ -73,7 +72,6 @@ void	show_history(t_var *data, int mod)
 		ft_bzero(data->lex_str, ft_strlen(data->lex_str));
 		data->lex_str = ft_strcpy(data->lex_str, data->history[i]);
 	}
-//	TERMCAP("cl");
 	data->pos = ft_strlen(data->lex_str);
 	prompt(data);
 }

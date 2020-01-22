@@ -77,19 +77,6 @@ static void		print_prompt(t_var *data)
 	}
 }
 
-void 			form_term(int pos, t_var *data)
-{
-	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0 && data->history_mod == 0)
-	{
-		while (pos >= 0)
-		{
-			if (data->lex_str[pos] == '\n')
-				TERMCAP("up");
-			pos--;
-		}
-	}
-}
-
 void			prompt(t_var *data)
 {
 	int tmp;
@@ -105,8 +92,10 @@ void			prompt(t_var *data)
 		data->pos = -3;
 	else if (data->c_prompt == 1)
 		data->pos = -8;
-	get_curs_pos(data, data->pos);
-	form_term(tmp, data);
+	if (data->save_pos == 0 || data->save_pos == 1 || data->save_pos == 2)
+		get_curs_pos_line_left(data, data->pos, tmp, 0);
+	else
+		get_curs_pos_line_right(data, data->pos, tmp, 0);
 	TERMCAP("cd");
 	print_prompt(data);
 	if (data->quotes % 2 == 0 && data->dquotes % 2 == 0)
@@ -114,8 +103,12 @@ void			prompt(t_var *data)
 	else
 		print_tronc_str(data);
 	data->pos = tmp;
-	get_curs_pos(data, data->pos);
+	if (data->save_pos == 0)
+		get_curs_pos_line_left(data, data->pos, data->pos, 1);
+	else
+		get_curs_pos_line_right(data, data->pos, data->pos, 1);
 	data->history_mod = 0;
+	data->save_pos = 0;
 }
 
 void			get_winsize(t_var *data)
@@ -125,12 +118,102 @@ void			get_winsize(t_var *data)
 	data->nb_rows = wind.ws_row;
 }
 
-void			get_curs_pos(t_var *data, int index)
+void 			get_curs_pos_line_right(t_var *data, int index, int pos, int mod)
 {
-	index = ft_strlen(data->lex_str);
+	int first_c;
+	int current_ret;
+	int nb_prompt;
+	int tmp;
+
+	tmp = 1;
+	if (mod == 0)
+		index = pos;
+	else
+		index = ft_strlen(data->lex_str);
 	while (index > data->pos)
 	{
-		TERMCAP("le");
-		index--;
+		if (index > 0 && data->lex_str[index - 1] == '\n' && data->quotes % 2 == 0
+				&& data->dquotes % 2 == 0 && data->history_mod == 0)
+		{
+			if (index == pos)
+				tmp = 0;
+			index--;
+			first_c = how_many_before(data, index);
+			current_ret = count_current_ret(data, index - 1);
+			if (current_ret > 0)
+				nb_prompt = 0;
+			else
+				nb_prompt = -8;
+			if (tmp != 0)
+				TERMCAP("up");
+			while (nb_prompt < 0)
+			{
+				TERMCAP("nd");
+				nb_prompt++;
+			}
+			while (first_c < index)
+			{
+				if (tmp != 0)
+					TERMCAP("nd");
+				first_c++;
+			}
+		}
+		else
+		{
+			TERMCAP("le");
+			index--;
+		}
+		tmp++;
+	}
+}
+
+void 			get_curs_pos_line_left(t_var *data, int index, int pos, int mod)
+{
+	int first_c;
+	int current_ret;
+	int nb_prompt;
+	int tmp;
+
+	tmp = 0;
+	if (data->lex_str[pos] == '\n' && mod == 0 && data->save_pos != 1)
+		TERMCAP("up");
+	if (mod == 0)
+		index = pos;
+	else
+		index = ft_strlen(data->lex_str);
+	while (index > data->pos)
+	{
+		if (index > 0 && data->lex_str[index - 1] == '\n' && data->quotes % 2 == 0
+				&& data->dquotes % 2 == 0 && data->history_mod == 0)
+		{
+			index--;
+			first_c = how_many_before(data, index);
+			current_ret = count_current_ret(data, index - 1);
+			if (current_ret > 0)
+				nb_prompt = 0;
+			else
+				nb_prompt = -8;
+			TERMCAP("up");
+			while (nb_prompt < 0)
+			{
+				TERMCAP("nd");
+				nb_prompt++;
+			}
+			while (first_c < index)
+			{
+				TERMCAP("nd");
+				first_c++;
+			}
+		}
+		else
+		{
+			TERMCAP("le");
+			index--;
+		}
+		if (data->save_pos == 2 && tmp == 0)
+		{
+			tmp++;
+			TERMCAP("up");
+		}
 	}
 }
