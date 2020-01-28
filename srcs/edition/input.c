@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 12:12:15 by ezonda            #+#    #+#             */
-/*   Updated: 2019/12/14 10:29:28 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/01/24 14:59:41 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void			get_key(t_var *data, char *buffer)
 		move_down(data);
 	if (!ft_strcmp(buffer, DEL))
 		remove_cur_char(data);
-	if (!ft_strcmp(buffer, UNDO))
+	if (!ft_strcmp(buffer, UNDO) || !ft_strcmp(buffer, UNDO_BIS))
 		remove_prev_char(data);
 	if (!ft_strcmp(buffer, HOME))
 		move_first_last(data, 1);
@@ -77,8 +77,8 @@ void			get_key(t_var *data, char *buffer)
 
 void			join_cmds(t_var *data, int index)
 {
-	data->cmds[index] = ft_strjoin_free(data->cmds[index],
-		data->cmds[index + 1], 0);
+	data->cmds[index] = ft_strjoin(data->cmds[index],
+			data->cmds[index + 1]); //free
 	index++;
 	while (data->cmds[index])
 	{
@@ -131,65 +131,29 @@ void			check_first_last_char(t_var *data, int mod)
 	}
 }
 
-void	rm_cote(char *line)
+int				parse_error_pipe(t_var *data)
 {
 	int i;
 	int j;
-	int k;
 
-	i = -1;
-	while (line[++i])
-	{
-		if (line[i] == '"')
-		{
-			k = i;
-			j = i + 1;
-			while (line[j])
-			{
-				line[k] = line[j];
-				k++;
-				j++;
-			}
-			line[k] = '\0';
-		}
-	}
-}
-
-char 			*tild(t_var *data, char *lex)
-{
-	int 	i;
-	int 	j;
-	char 	*tmp;
-	char	*save;
-
-	i = -1;
+	i = 0;
 	j = 0;
-	if (!(tmp = (char*)malloc(sizeof(char) * BUFF_SHELL)))
-		return (NULL);
-	if (!(save = (char*)malloc(sizeof(char) * BUFF_SHELL)))
-		return (NULL);
-	while (lex[++i])
+	while (data->lex_str[i] == '|' || data->lex_str[i] == ';'
+			|| data->lex_str[i] == ' ' || data->lex_str[i] == '\\')
+		i++;
+	while (data->lex_str[j] == ' ')
+		j++;
+	if (i == j)
+		return (0);
+	if (i == ft_strlen(data->lex_str))
 	{
-		if (lex[i] == '~')
-		{
-			while (j < i)
-			{
-				tmp[j] = lex[j];
-				j++;
-			}
-			tmp[j] = '\0';
-			tmp = ft_strjoin_free(tmp, get_env(data->environ, "HOME="), 0);
-			j = 0;
-			while (lex[++i])
-			{
-				save[j] = lex[i];
-				j++;
-			}
-			save[j] = '\0';
-			lex = ft_strjoin_free(tmp, save, 2);
-		}
+		ft_putstr_fd("\n21sh: parse error near `", 2);
+		ft_putchar_fd(data->lex_str[0], 2);
+		ft_putchar_fd(data->lex_str[1], 2);
+		ft_putstr_fd("'\n", 2);
+		return (1);
 	}
-	return (lex);
+	return (0);
 }
 
 void			launch_cmds(t_var *data)
@@ -197,9 +161,12 @@ void			launch_cmds(t_var *data)
 	t_cmd	*cmd;
 
 	data->cmd_index = 0;
-	rm_cote(data->lex_str);
-	if (!(data->lex_str = tild(data, data->lex_str)))
+	if (parse_error_pipe(data))
+	{
+		data->pos = 0;
+		ft_bzero(data->lex_str, ft_strlen(data->lex_str));
 		return ;
+	}
 	check_first_last_char(data, 0);
 	data->cmds = ft_strsplit(data->lex_str, ';');
 	check_single_pipes(data);
@@ -211,8 +178,28 @@ void			launch_cmds(t_var *data)
 		data->cmd_index++;
 	}
 	data->pos = 0;
-	ft_bzero(data->lex_str, ft_strlen(data->lex_str));
+	if (data->lex_str)
+		ft_bzero(data->lex_str, ft_strlen(data->lex_str));
 	free_tab(data->cmds);
+}
+
+void			init_cmds(t_var *data)
+{
+	if (ft_strlen(data->lex_str) != 0)
+	{
+		if (check_quotes(data) == 1)
+			read_quotes(data, 0);
+		if (data->sig_end != 1)
+		{
+			add_to_history(data);
+			launch_cmds(data);
+		}
+	}
+	else
+		ft_putchar('\n');
+	if (data->sig_end == 1)
+		ft_printf("%s\n\n\n", data->lex_str);
+	prompt(data);
 }
 
 void			get_input(t_var *data)
@@ -222,6 +209,9 @@ void			get_input(t_var *data)
 	prompt(data);
 	while (1)
 	{
+		if (!data->lex_str)
+			if (!(data->lex_str = (char*)malloc(sizeof(char) * BUFF_SHELL)))
+				return ;
 		update_data(0, data);
 		ft_bzero(buffer, 6);
 		get_winsize(data);
@@ -234,19 +224,8 @@ void			get_input(t_var *data)
 			data->char_count++;
 		}
 		if (!ft_strcmp(buffer, RET))
-		{
-			data->pos = ft_strlen(data->lex_str);
-			if (ft_strlen(data->lex_str) != 0)
-			{
-				if (check_quotes(data) == 1)
-					read_quotes(data);
-				add_to_history(data);
-				launch_cmds(data);
-			}
-			else
-				ft_putchar('\n');
-			prompt(data);
-		}
+			init_cmds(data);
 		get_key(data, buffer);
+		data->sig_end = 0;
 	}
 }

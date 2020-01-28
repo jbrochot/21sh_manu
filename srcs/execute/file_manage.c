@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 10:48:59 by ezonda            #+#    #+#             */
-/*   Updated: 2019/12/14 10:50:58 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/01/23 16:22:39 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,46 @@ char		*rm_char(char *str, char c)
 	return (str);
 }
 
+void 		realloc_here(char c, t_var *data)
+{
+	int		i;
+	int		j;
+	char	s1[BUFF_SHELL];
+	char	s2[BUFF_SHELL];
+
+	j = 0;
+	i = data->pos;
+	while (data->here_stock[i])
+		s2[j++] = data->here_stock[i++];
+	s2[j] = '\0';
+	i = 0;
+	j = 0;
+	while (i < data->pos)
+		s1[j++] = data->here_stock[i++];
+	s1[i++] = c;
+	s1[i] = '\0';
+	free(data->here_stock);
+	data->here_stock = ft_strjoin(s1, s2);
+//	data->pos++;
+//	prompt(data);
+}
+
 void		add_to_here_stock(char c, t_var *data)
 {
 	int i;
+	char *tmp;
+
 
 	i = 0;
-	while (data->here_stock[i])
+	tmp = ft_strdup(data->here_stock);
+	free(data->here_stock);
+	while (tmp[i])
 		i++;
-	data->here_stock[i++] = c;
-	data->here_stock[i] = '\0';
+	tmp[i++] = c;
+	tmp[i] = '\0';
+	data->here_stock = ft_strdup(tmp);
+	//	data->pos++;
+		free(tmp);
 }
 
 void		rm_herend(t_var *data)

@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 11:36:22 by ezonda            #+#    #+#             */
-/*   Updated: 2019/09/12 14:20:16 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/01/23 16:19:22 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,9 @@ void	realloc_str(char c, t_var *data)
 		s1[j++] = data->lex_str[i++];
 	s1[i++] = c;
 	s1[i] = '\0';
+	free(data->lex_str);
 	data->lex_str = ft_strjoin(s1, s2);
 	data->pos++;
-	if (data->lex_str[data->pos] == '\n')
-		data->save_pos = 1;
 	prompt(data);
 }
 
@@ -53,13 +52,8 @@ void	remove_prev_char(t_var *data)
 	int i;
 
 	i = data->pos - 1;
-	if (!data->lex_str[0] || (data->lex_str[i] == '\n'
-			&& (data->quotes % 2 != 0 || data->dquotes % 2 != 0)))
+	if (!data->lex_str[0])
 		return ;
-	if (data->lex_str[i] == '\n')
-		data->save_pos = 2;
-	if (data->lex_str[i + 1] == '\n')
-		data->save_pos = 1;
 	while (data->lex_str[i])
 	{
 		data->lex_str[i] = data->lex_str[i + 1];
@@ -78,8 +72,6 @@ void	remove_cur_char(t_var *data)
 	i = data->pos;
 	if (!data->lex_str[data->pos])
 		return ;
-	if (data->lex_str[i] == '\n')
-		data->save_pos = 1;
 	while (data->lex_str[i])
 	{
 		data->lex_str[i] = data->lex_str[i + 1];

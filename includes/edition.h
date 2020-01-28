@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/19 10:19:08 by ezonda            #+#    #+#             */
-/*   Updated: 2019/12/14 10:34:24 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/01/24 16:53:00 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@
 # define OPT_R		(char[5]){ 27, 27, 91, 67, 0}
 # define OPT_U		(char[5]){ 27, 27, 91, 65, 0}
 # define OPT_D		(char[5]){ 27, 27, 91, 66, 0}
-# define RET			(char[4]){ 10, 0, 0, 0}
-# define HOME			(char[4]){ 27, 91, 72, 0}
-# define END			(char[4]){ 27, 91, 70, 0}
-# define UNDO			(char[4]){ 127, 0, 0, 0}
-# define DEL			(char[5]){ 27, 91, 51, 126, 0}
+# define RET		(char[4]){ 10, 0, 0, 0}
+# define HOME		(char[4]){ 27, 91, 72, 0}
+# define END		(char[4]){ 27, 91, 70, 0}
+# define UNDO		(char[4]){ 127, 0, 0, 0}
+# define UNDO_BIS	(char[4]){ 8, 0, 0, 0}
+# define DEL		(char[5]){ 27, 91, 51, 126, 0}
 # define CTRL_D		(char[4]){ 4, 0, 0, 0}
 
 # define TERMCAP(x) tputs(tgetstr(x, NULL), 1, ft_putchar_v2)
@@ -68,15 +69,20 @@ typedef struct	s_var
 	int		h_prompt;
 	int		n_prompt;
 	int		c_prompt;
+	int		q_prompt;
+	int		dq_prompt;
 	char	*herend;
 	char	*here_stock;
 	int		cat_here;
 	char	*files;
-	int 	test;
-	char	**stock_test;
-	int 	redir_count;
+	int test;
+	char **stock_test;
+	int redir_count;
+	char *qstr;
+	int qlen;
 	int 	history_mod;
 	int 	save_pos;
+	int 	sig_end;
 }				t_var;
 
 void			get_input(t_var *data);
@@ -100,8 +106,6 @@ void			update_history(t_var *data);
 void			prompt(t_var *data);
 void			get_winsize(t_var *data);
 void			get_curs_pos(t_var *data, int index);
-void 			get_curs_pos_line_left(t_var *data, int index, int pos, int mod);
-void 			get_curs_pos_line_right(t_var *data, int index, int pos, int mod);
 
 void			jump(t_var *data, int mod);
 void			get_prev_word(t_var *data);
@@ -128,7 +132,10 @@ void			cursh_prompt(t_var *data);
 void			pipe_prompt(t_var *data, int index);
 void			heredoc_prompt(t_var *data);
 
-int 		 how_many_before(t_var *data, int pos);
-int   	 count_current_ret(t_var *data, int pos);
+int   		count_current_ret(t_var *data, int pos);
+int  			how_many_before(t_var *data, int pos);
+void 			get_curs_pos_line_right(t_var *data, int index, int pos, int mod);
+void 			get_curs_pos_line_left(t_var *data, int index, int pos, int mod);
+
 
 #endif

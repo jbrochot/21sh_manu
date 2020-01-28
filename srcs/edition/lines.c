@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jebrocho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/20 16:14:04 by jebrocho          #+#    #+#             */
-/*   Updated: 2020/01/20 16:14:22 by jebrocho         ###   ########.fr       */
+/*   Created: 2020/01/28 13:11:02 by jebrocho          #+#    #+#             */
+/*   Updated: 2020/01/28 13:11:09 by jebrocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int  how_many_before(t_var *data, int pos)
   return (pos);
 }
 
-/*int   how_many_after(t_var *data, int pos)
-{
 
-}*/
 
 int   count_current_ret(t_var *data, int pos)
 {

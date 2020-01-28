@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 14:06:09 by ezonda            #+#    #+#             */
-/*   Updated: 2019/11/20 10:56:41 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/01/22 10:26:29 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ void	move_left(t_var *data)
 {
 	if (data->pos == 0)
 		return ;
+/*	if (data->lex_str[data->pos - 1] == '\n' &&
+			(data->quotes % 2 != 0 || data->dquotes % 2 != 0))
+		return ;*/
 	if (data->lex_str[data->pos] == '\n')
 	{
 		data->pos--;
-		prompt(data);
+	 	prompt(data);
 		return ;
 	}
 	if (data->right == 1)
@@ -28,6 +31,7 @@ void	move_left(t_var *data)
 		data->in_selection = 0;
 	}
 	data->pos--;
+	TERMCAP("le");
 	if (data->in_selection == 1)
 	{
 		data->left = 1;
@@ -46,12 +50,12 @@ void	move_right(t_var *data)
 		data->in_selection = 0;
 	}
 	data->pos++;
+	TERMCAP("nd");
 	if (data->in_selection == 1)
 	{
 		data->right = 1;
 		select_mode(data);
 	}
-	data->save_pos = 3;
 	prompt(data);
 }
 
