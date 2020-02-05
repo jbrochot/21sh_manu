@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 14:34:02 by ezonda            #+#    #+#             */
-/*   Updated: 2020/02/04 15:15:45 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/02/05 14:34:57 by jebrocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,6 @@ t_cmd		*parse_redir(t_cmd *cmd, char **p, char *end)
 			cmd = get_redir_type(cmd, tok, f);
 	}
 	return (cmd);
-}
-
-void		free_str(t_cmd **ret)
-{
-	if (ret)
-	{
-		if (*ret)
-			free(ret);
-		*ret = NULL;
-	}
 }
 
 t_cmd		*parse_basic(char **p_input, char *end, int *res)

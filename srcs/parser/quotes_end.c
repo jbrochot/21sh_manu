@@ -6,31 +6,30 @@
 /*   By: jebrocho <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 00:49:56 by jebrocho          #+#    #+#             */
-/*   Updated: 2020/02/05 00:50:10 by jebrocho         ###   ########.fr       */
+/*   Updated: 2020/02/05 14:20:56 by jebrocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/core.h"
 
-int  ret_quotes(t_var *data, int quotes, int dquotes, int index)
+int		ret_quotes(t_var *data, int quotes, int dquotes, int index)
 {
-  int i;
+	int		i;
 
-  if (quotes % 2 == 0)
+	if (quotes % 2 == 0)
 		return (0);
 	else if (quotes % 2 == 1 && dquotes == 0)
 		return (1);
 	else
 	{
-		i = ft_strlen(data->lex_str) - 1;
+		i = ft_strlen(data->lex_str);
 		dquotes = 0;
-		while (data->lex_str[i] != '\'')
+		while (data->lex_str[--i] != '\'')
 		{
 			if (data->lex_str[i] == '"' && dquotes == 0)
 				index = i;
 			if (data->lex_str[i] == '"')
 				dquotes++;
-			i--;
 		}
 		if (dquotes % 2 == 1)
 		{
@@ -42,12 +41,12 @@ int  ret_quotes(t_var *data, int quotes, int dquotes, int index)
 	}
 }
 
-int	 check_quotes_end(t_var *data)
+int		check_quotes_end(t_var *data)
 {
-	int i;
-	int quotes;
-	int dquotes;
-	int index;
+	int		i;
+	int		quotes;
+	int		dquotes;
+	int		index;
 
 	quotes = 0;
 	dquotes = 0;
@@ -62,25 +61,24 @@ int	 check_quotes_end(t_var *data)
 	return (ret_quotes(data, quotes, dquotes, index));
 }
 
-int   ret_dquotes(t_var *data, int quotes, int dquotes, int index)
+int		ret_dquotes(t_var *data, int quotes, int dquotes, int index)
 {
-  int i;
+	int i;
 
-  if (dquotes % 2 == 0)
+	if (dquotes % 2 == 0)
 		return (0);
 	else if (dquotes % 2 == 1 && quotes == 0)
 		return (1);
 	else
 	{
-		i = ft_strlen(data->lex_str) - 1;
+		i = ft_strlen(data->lex_str);
 		quotes = 0;
-		while (data->lex_str[i] != '"')
+		while (data->lex_str[--i] != '"')
 		{
 			if (data->lex_str[i] == '\'' && quotes == 0)
 				index = i;
 			if (data->lex_str[i] == '\'')
 				quotes++;
-			i--;
 		}
 		if (quotes % 2 == 1)
 		{
@@ -92,12 +90,12 @@ int   ret_dquotes(t_var *data, int quotes, int dquotes, int index)
 	}
 }
 
-int 	check_dquotes_end(t_var *data)
+int		check_dquotes_end(t_var *data)
 {
-	int i;
-	int quotes;
-	int dquotes;
-	int index;
+	int		i;
+	int		quotes;
+	int		dquotes;
+	int		index;
 
 	quotes = 0;
 	dquotes = 0;
@@ -109,10 +107,10 @@ int 	check_dquotes_end(t_var *data)
 		if (data->lex_str[i] == '"' && data->lex_str[i - 1] != '\\')
 			dquotes++;
 	}
-  return (ret_dquotes(data, quotes, dquotes, index));
+	return (ret_dquotes(data, quotes, dquotes, index));
 }
 
-void 	rm_dquotes(char *str, char c)
+void	rm_dquotes(char *str, char c)
 {
 	int i;
 

@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 14:10:40 by ezonda            #+#    #+#             */
-/*   Updated: 2020/02/04 12:39:55 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/02/05 14:26:56 by jebrocho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,7 @@ void	parse_simple_dquotes(t_var *data, int index)
 	index = get_close_dquotes(data, index);
 	last_pos = index - 2;
 	while (data->lex_str[index])
-	{
-		tmp_end[i] = data->lex_str[index];
-		i++;
-		index++;
-	}
+		tmp_end[i++] = data->lex_str[index++];
 	data->dquotes -= 2;
 	add_exp(data);
 	realloc_quotes(data, tmp_start, tmp_end, last_pos);
