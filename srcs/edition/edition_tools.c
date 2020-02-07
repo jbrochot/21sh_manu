@@ -40,6 +40,7 @@ void	init_var(t_var *data)
 	data->redir_count = 0;
 	data->cmd_index = 0;
 	data->hist_pos = 0;
+	data->reset = 0;
 }
 
 void	init_shell(t_var *data)

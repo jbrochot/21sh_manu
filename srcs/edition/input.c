@@ -86,6 +86,7 @@ void			get_input(t_var *data)
 	char buffer[6];
 
 	prompt(data);
+	data->reset = 0;
 	while (1)
 	{
 		update_data(0, data);
