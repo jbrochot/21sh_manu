@@ -37,7 +37,7 @@ void	parse_multi_quotes(t_var *data, int index, int mod)
 	ft_strdel(&data->here_stock);
 	free(data->raw_cmd);
 	data->raw_cmd = ft_strdup(data->lex_str);
-	rm_char(data->lex_str, '\'');
+	rm_char(&data->lex_str[index], '\'');
 	data->q_prompt = 0;
 	if (data->reset == 1)
 		get_input(data);
@@ -97,7 +97,7 @@ void	parse_multi_dquotes(t_var *data, int index, int mod)
 	ft_strdel(&data->here_stock);
 	free(data->raw_cmd);
 	data->raw_cmd = ft_strdup(data->lex_str);
-	rm_dquotes(data->lex_str, '"');
+	rm_dquotes(&data->lex_str[index], '"');
 	check_backslash(data);
 	data->dq_prompt = 0;
 	if (data->reset == 1)

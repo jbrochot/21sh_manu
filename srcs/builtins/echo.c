@@ -33,6 +33,7 @@ int		echo_builtin(t_var *data)
 	int flag_n;
 	char **arg_echo;
 
+//	ft_printf("raw : %s\n", data->raw_cmd);
 	new_exp(data);
 	i = count_arg(data) + 1;
 	if (!(arg_echo = (char **)malloc(sizeof(char*) * i + 1)))

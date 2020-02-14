@@ -99,10 +99,6 @@ int		cd_builtin(t_var *data, char **cmd)
 	int		opt;
 	char	*newp;
 
-	opt = -1;
-	while (cmd[++opt])
-		ft_printf("cmd : %s\n", cmd[opt]);
-
 	if (!cmd[1])
 		newp = get_env(data->environ, "HOME=");
 	else

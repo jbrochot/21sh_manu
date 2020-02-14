@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 12:57:56 by ezonda            #+#    #+#             */
-/*   Updated: 2020/02/04 10:00:16 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/02/12 11:04:35 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void		check_single_pipes(t_var *data)
 		else
 			i++;
 	}
-	if (data->cmds[last_cmd] && (data->cmds[last_cmd][len - 1] == '|'
-			|| data->cmds[last_cmd][len] == '|'))
+	if (data->cmds[last_cmd] && data->cmds[last_cmd][len - 1] == '|')
 	{
 		ft_putchar('\n');
 		pipe_prompt(data, last_cmd);
+	//	ft_printf("lex : %s\n", data->lex_str);
 	}
 }
 
@@ -62,16 +62,18 @@ void		check_first_last_char(t_var *data, int mod)
 	int len;
 
 	len = ft_strlen(data->lex_str) - 1;
-	if (data->lex_str[0] == '{' && (data->lex_str[1] == '\0'
-	 		|| is_whitespaces(data->lex_str[1])) && mod == 0)
+	if (data->lex_str[0] == '{' && (data->lex_str[1] == '\0' || is_whitespaces(data->lex_str[1])) && mod == 0)
 	{
 		ft_putchar('\n');
 		cursh_prompt(data);
+		ft_printf("lex : %s\n", data->lex_str);
+		getchar();
 	}
 	if (data->lex_str[len] == 92 && mod == 1)
 	{
 		ft_putchar('\n');
 		new_prompt(data);
+		ft_printf("lex : %s\n", data->lex_str);
 	}
 }
 
@@ -116,7 +118,7 @@ void		get_copy_paste(t_var *data, char *buffer)
 		copy_cut_mode(data, 1);
 	if (!ft_strcmp(buffer, (char[4]){ -30, -120, -102, 0}))
 		paste_mode(data);
-	if (!ft_strcmp(buffer, (char[4]){ 4, 0, 0, 0}))
+	if (!ft_strcmp(buffer, (char[4]){ 4, 0, 0, 0}) && !data->h_prompt)
 	{
 		if (data->lex_str[0])
 			remove_cur_char(data);

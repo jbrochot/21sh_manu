@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/03 13:05:11 by ezonda            #+#    #+#             */
-/*   Updated: 2020/02/05 13:39:53 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/02/10 10:42:23 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ void	cursh_loop(t_var *data)
 		{
 			data->here_stock = ft_strjoin_free(data->here_stock
 					, data->lex_str, 0);
+			if (check_quotes(data) == 1)
+			{
+					read_quotes(data, 0);
+//					data->here_stock = ft_strdup(data->raw_cmd);
+					ft_printf("\nraw : %s\n", data->raw_cmd);
+			}
 			if (data->lex_str[ft_strlen(data->lex_str) - 1] == '}')
 				break ;
 			data->pos = 0;
@@ -101,6 +107,11 @@ void	heredoc_loop(t_var *data)
 			ft_putchar('\n');
 			data->here_stock = ft_strjoin_free(data->here_stock
 					, data->lex_str, 0);
+			if (check_quotes(data) == 1)
+			{
+					read_quotes(data, 0);
+					data->here_stock = ft_strdup(data->raw_cmd);
+			}
 			if (!ft_strcmp(data->lex_str, data->herend))
 			{
 				rm_herend(data);
@@ -109,6 +120,12 @@ void	heredoc_loop(t_var *data)
 			data->pos = 0;
 			add_to_here_stock('\n', data);
 			ft_bzero(data->lex_str, ft_strlen(data->lex_str));
+		}
+		if (!ft_strcmp(buffer, (char[4]){ 4, 0, 0, 0}))
+		{
+			ft_putchar('\n');
+			rm_herend(data);
+			break ;
 		}
 		get_key(data, buffer);
 	}

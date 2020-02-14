@@ -120,8 +120,6 @@ void	read_quotes(t_var *data, int i)
 	data->qstr = ft_strnew(ft_strlen(data->lex_str));
 	if (!data->lex_str[i])
 		return ;
-	if (i == 0)
-		data->raw_cmd = ft_strdup(data->lex_str);
 	while (data->lex_str[i]
 			&& data->lex_str[i] != '\'' && data->lex_str[i] != '"')
 		i++;

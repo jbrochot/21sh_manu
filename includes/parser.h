@@ -6,7 +6,7 @@
 /*   By: ezonda <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 14:01:24 by ezonda            #+#    #+#             */
-/*   Updated: 2020/02/05 14:47:13 by ezonda           ###   ########.fr       */
+/*   Updated: 2020/02/08 17:45:37 by ezonda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,10 @@ int						ft_lstcount(t_list *list);
 int						check_quotes(t_var *data);
 void					read_quotes(t_var *data, int i);
 void					realloc_quotes(
-	t_var *data, char *start, char *end, int last_pos);
+		t_var *data, char *start, char *end, int last_pos);
 void					realloc_dquotes(
-	t_var *data, char *start, char *end, int last_pos);
+		t_var *data, char *start, char *end, int last_pos);
+
 void					quotes_loop(t_var *data);
 void					dquotes_loop(t_var *data);
 int						get_close_quotes(t_var *data, int index);
@@ -89,9 +90,6 @@ int						check_quotes_end(t_var *data);
 void					rm_dquotes(char *str, char c);
 
 void					add_exp(t_var *data);
-//void					join_exp(t_var *data, char *stock, char *selec);
-//void					apply_exp(t_var *data, char *selec, int j, int i);
-//char					*get_exp(char *str, int index);
-void					new_exp(t_var *data);
+void    			new_exp(t_var *data);
 
 #endif

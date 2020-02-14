@@ -152,6 +152,5 @@ int		env_builtin(t_var *data)
 		while (p_environ[++ind])
 			ft_printf("%s\n", p_environ[ind]);
 	}
-	ft_strdel(&data->raw_cmd);
 	return (1);
 }

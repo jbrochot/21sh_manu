@@ -42,6 +42,18 @@ void	check_backslash(t_var *data)
 	}
 }
 
+void	realloc_quotes(t_var *data, char *start, char *end, int last_pos)
+{
+	free(data->lex_str);
+	data->lex_str = ft_strjoin_free(start, "\'", 0);
+	data->lex_str = ft_strjoin_free(data->lex_str, data->qstr, 2);
+	data->qstr = ft_strdup(data->lex_str);
+	free(data->lex_str);
+	data->lex_str = ft_strjoin_free(data->qstr, "\'", 0);
+	data->lex_str = ft_strjoin_free(data->lex_str, end, 2);
+	read_quotes(data, last_pos + 2);
+}
+
 void	realloc_dquotes(t_var *data, char *start, char *end, int last_pos)
 {
 	free(data->lex_str);
@@ -54,18 +66,6 @@ void	realloc_dquotes(t_var *data, char *start, char *end, int last_pos)
 	read_quotes(data, last_pos + 2);
 }
 
-
-void	realloc_quotes(t_var *data, char *start, char *end, int last_pos)
-{
-	free(data->lex_str);
-	data->lex_str = ft_strjoin_free(start, "\'", 0);
-	data->lex_str = ft_strjoin_free(data->lex_str, data->qstr, 2);
-	data->qstr = ft_strdup(data->lex_str);
-	free(data->lex_str);
-	data->lex_str = ft_strjoin_free(data->qstr, "\'", 0);
-	data->lex_str = ft_strjoin_free(data->lex_str, end, 2);
-	read_quotes(data, last_pos + 2);
-}
 
 int		get_close_dquotes(t_var *data, int index)
 {
