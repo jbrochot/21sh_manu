@@ -43,17 +43,17 @@ int		echo_builtin(t_var *data)
 	flag_n = check_flag_n(arg_echo);
 	if (flag_n == 0)
 		while (arg_echo[++i])
-			ft_printf("%s\n", arg_echo[i]);
+			ft_printf("%s ", arg_echo[i]);
 	if (flag_n != 0)
 	{
 		i = 1;
 		while (++i < flag_n - 1)
-			ft_printf("%s\n", arg_echo[i]);
+			ft_printf("%s ", arg_echo[i]);
 		ft_printf("%s", arg_echo[i]);
 		tputs(tgetstr("mr", NULL), 1, ft_putchar_v2);
 		ft_putchar('%');
 		tputs(tgetstr("me", NULL), 1, ft_putchar_v2);
-		ft_putchar('\n');
 	}
+	ft_putchar('\n');
 	return (1);
 }

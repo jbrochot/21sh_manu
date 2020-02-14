@@ -44,7 +44,7 @@ void			launch_cmds(t_var *data)
 	t_cmd	*cmd;
 
 	data->cmd_index = 0;
-	if (data->raw_cmd != NULL)
+	if (data->raw_cmd)
 		data->lex_str = ft_strdup(data->raw_cmd);
 	if (parse_error_pipe(data))
 	{

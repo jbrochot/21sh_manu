@@ -12,21 +12,32 @@
 
 #include "../../includes/core.h"
 
-void 	form_cmd_raw(t_var *data, char **cmd)
+void 	form_cmd_raw(t_var *data, char **cmd, int i)
 {
-	int i;
+	int j;
+	int k;
 
-	i = 0;
-	data->raw_cmd = ft_strdup(cmd[i]);
-	while (cmd[++i])
+	j = 0;
+	k = 0;
+/*	while (cmd[++i])
+		ft_printf("cmd : %s\n", cmd[i]);*/
+	free(data->raw_cmd);
+	data->raw_cmd = ft_strdup(data->cmds[i]);
+	while (data->raw_cmd[j] == ' ')
+		j++;
+	while (data->raw_cmd[j])
 	{
-		data->raw_cmd = ft_strjoin_free(data->raw_cmd, " ", 0);
-		data->raw_cmd = ft_strjoin_free(data->raw_cmd, cmd[i], 0);
+		data->raw_cmd[k] = data->raw_cmd[j];
+		k++;
+		j++;
 	}
+	data->raw_cmd[k] = '\0';
 }
 
 int		is_builtin(t_var *data, char **cmd)
 {
+	static int i;
+
 	if (!ft_strcmp(cmd[0], "exit"))
 		exit_shell(data);
 	else if (!ft_strcmp(cmd[0], "cd"))
@@ -37,18 +48,19 @@ int		is_builtin(t_var *data, char **cmd)
 	}
 	else if (!ft_strcmp(cmd[0], "env"))
 	{
-		form_cmd_raw(data, cmd);
+		form_cmd_raw(data, cmd, i);
 		return (env_builtin(data));
 	}
 	else if (!ft_strcmp(cmd[0], "echo"))
 	{
-		form_cmd_raw(data, cmd);
+		form_cmd_raw(data, cmd, i);
 		return (echo_builtin(data));
 	}
 	else if (!ft_strcmp(cmd[0], "setenv"))
 		return (setenv_builtin(data, cmd));
 	else if (!ft_strcmp(cmd[0], "unsetenv"))
 		return (unsetenv_builtin(data, cmd));
+	i++;
 	return (0);
 }
 

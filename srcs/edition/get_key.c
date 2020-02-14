@@ -62,7 +62,8 @@ void		check_first_last_char(t_var *data, int mod)
 	int len;
 
 	len = ft_strlen(data->lex_str) - 1;
-	if (data->lex_str[0] == '{' && (data->lex_str[1] == '\0' || is_whitespaces(data->lex_str[1])) && mod == 0)
+	if (data->lex_str[0] == '{' && (data->lex_str[1] == '\0'
+	 		|| is_whitespaces(data->lex_str[1])) && mod == 0)
 	{
 		ft_putchar('\n');
 		cursh_prompt(data);
